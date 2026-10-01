@@ -4,7 +4,7 @@
 source ../settings/scripts/_common.sh
 
 ynh_script_progression "Restoring QuestarrNG files..."
-ynh_restore
+ynh_restore "$install_dir"
 
 if [[ -L "$YNH_APP_BACKUP_DIR/data" || ! -d "$YNH_APP_BACKUP_DIR/data" ]]; then
 	ynh_die --message="QuestarrNG data snapshot is missing or invalid."
@@ -19,6 +19,9 @@ questarrng_prepare_data
 chown -R "$app:$app" "$install_dir" "$data_dir"
 questarrng_install_apprise
 questarrng_prepare_service
+ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
+ynh_restore "/etc/systemd/system/$app.service"
+ynh_restore "/etc/logrotate.d/$app"
 
 ynh_script_progression "Starting QuestarrNG..."
 questarrng_start_service
