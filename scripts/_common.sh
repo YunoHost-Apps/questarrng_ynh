@@ -57,13 +57,13 @@ questarrng_build_app() {
 	chown -R "$app:$app" "$install_dir"
 	cd "$install_dir" || ynh_die --message="Could not enter QuestarrNG's install directory."
 	ynh_print_info "Installing QuestarrNG's locked Node.js dependencies..."
-	ynh_exec_as_app npm ci --ignore-scripts --no-audit --no-fund
+	ynh_exec_as_app npm ci --ignore-scripts --no-audit --no-fund 2>&1
 
 	ynh_print_info "Building QuestarrNG..."
-	ynh_exec_as_app npm run build
+	ynh_exec_as_app npm run build 2>&1
 
 	ynh_print_info "Removing development-only Node.js dependencies..."
-	ynh_exec_as_app npm prune --omit=dev --ignore-scripts --no-audit --no-fund
+	ynh_exec_as_app npm prune --omit=dev --ignore-scripts --no-audit --no-fund 2>&1
 	cd "$working_directory" || ynh_die --message="Could not return to the package directory."
 	chown -R "$app:$app" "$install_dir"
 }
