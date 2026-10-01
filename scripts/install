@@ -1,18 +1,40 @@
 #!/bin/bash
 # shellcheck disable=SC1091,SC2154
 
-source _common.sh
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-ynh_script_progression "Installing QuestarrNG release files..."
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression "Installing QuestarrNG source files..."
 ynh_setup_source --dest_dir="$install_dir"
 
+#=================================================
+# APP INITIAL CONFIGURATION
+#=================================================
+ynh_script_progression "Preparing QuestarrNG data, database, and dependencies..."
 questarrng_prepare_data
 questarrng_build_app
 questarrng_install_apprise
-questarrng_prepare_service
 
-ynh_script_progression "Starting QuestarrNG..."
-questarrng_start_service
+#=================================================
+# SYSTEM CONFIGURATION
+#=================================================
+questarrng_prepare_service
 questarrng_register_service
 
-ynh_script_progression "QuestarrNG installation completed"
+#=================================================
+# START SYSTEMD SERVICE
+#=================================================
+ynh_script_progression "Starting QuestarrNG..."
+questarrng_start_service
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+ynh_script_progression "Installation of $app completed"

@@ -1,7 +1,13 @@
 #!/bin/bash
 # shellcheck disable=SC1091,SC2154
 
-source /usr/share/yunohost/helpers
+#=================================================
+# COMMON VARIABLES AND CUSTOM HELPERS
+#=================================================
+
+#=================================================
+# PERSONAL HELPERS
+#=================================================
 
 questarrng_prepare_data() {
 	local log_file link_target expected_target

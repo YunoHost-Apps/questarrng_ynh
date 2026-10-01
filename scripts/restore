@@ -1,8 +1,16 @@
 #!/bin/bash
 # shellcheck disable=SC1091,SC2154
 
-source ../settings/scripts/_common.sh
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
+source ../settings/scripts/_common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# RESTORE THE APP MAIN DIR
+#=================================================
 ynh_script_progression "Restoring QuestarrNG files..."
 ynh_restore "$install_dir"
 
@@ -15,16 +23,30 @@ rsync --archive --delete \
 	--exclude="/apprise-venv/" \
 	"$YNH_APP_BACKUP_DIR/data/" "$data_dir/"
 
+#=================================================
+# RESTORE PERSISTENT DATA
+#=================================================
 questarrng_prepare_data
 chown -R "$app:$app" "$install_dir" "$data_dir"
 questarrng_install_apprise
+
+#=================================================
+# RESTORE SYSTEM CONFIGURATION
+#=================================================
 questarrng_prepare_service
 ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
 ynh_restore "/etc/systemd/system/$app.service"
+systemctl enable "$app.service" --quiet
 ynh_restore "/etc/logrotate.d/$app"
-
-ynh_script_progression "Starting QuestarrNG..."
-questarrng_start_service
 questarrng_register_service
 
-ynh_script_progression "QuestarrNG restoration completed"
+#=================================================
+# START SYSTEMD SERVICE
+#=================================================
+ynh_script_progression "Starting QuestarrNG..."
+questarrng_start_service
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+ynh_script_progression "Restoration of $app completed"

@@ -1,11 +1,16 @@
 #!/bin/bash
 # shellcheck disable=SC1091,SC2154
 
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
 source _common.sh
+source /usr/share/yunohost/helpers
 
-ynh_script_progression "Stopping QuestarrNG..."
-ynh_systemctl --service="$app" --action="stop"
-
+#=================================================
+# REMOVE SYSTEM CONFIGURATION
+#=================================================
 ynh_script_progression "Removing the YunoHost service and reverse proxy..."
 if ynh_hide_warnings yunohost service status "$app" >/dev/null; then
 	yunohost service remove "$app"
@@ -14,4 +19,7 @@ ynh_config_remove_systemd
 ynh_config_remove_nginx
 ynh_config_remove_logrotate
 
-ynh_script_progression "QuestarrNG removal completed"
+#=================================================
+# END OF SCRIPT
+#=================================================
+ynh_script_progression "Removal of $app completed"
