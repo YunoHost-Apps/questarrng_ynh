@@ -1,7 +1,3 @@
-This is a dummy disclaimer to display after the install
+Open the QuestarrNG tile and finish the first-run account setup. Configure an IGDB client ID and secret in the app settings to use game discovery and metadata features.
 
-The app url is <https://__DOMAIN____PATH__>
-
-The app install dir is `__INSTALL_DIR__`
-
-The app id is `__ID__`
+QuestarrNG runs as its own system user. If you configure download or import folders on this server, grant that user access to the required paths. The package stores its database and configuration in the app's persistent data directory.
