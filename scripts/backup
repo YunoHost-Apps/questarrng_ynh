@@ -23,11 +23,11 @@ trap finish_backup EXIT
 
 if systemctl is-active --quiet "$app"; then
 	service_was_active=true
-	ynh_script_progression "Stopping QuestarrNG for a consistent database backup..."
+	ynh_print_info "Stopping QuestarrNG for a consistent database backup..."
 	ynh_systemctl --service="$app" --action="stop"
 fi
 
-ynh_script_progression "Snapshotting QuestarrNG data..."
+ynh_print_info "Snapshotting QuestarrNG data..."
 mkdir -p "$YNH_APP_BACKUP_DIR/data"
 rsync --archive --delete \
 	--exclude="/logs/" \
